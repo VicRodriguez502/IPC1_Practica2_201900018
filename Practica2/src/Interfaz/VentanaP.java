@@ -2,6 +2,7 @@ package Interfaz;
 
 import Hilos.Cronometro;
 import Hilos.QuicksortA;
+import Hilos.QuiksortD;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -228,7 +229,7 @@ public class VentanaP extends JFrame implements ActionListener {
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < datos.length; i++) {
-            dataset.addValue(datos[i], String.valueOf(datos[i]), color);
+            dataset.addValue(datos[i], String.valueOf(i), color);
         }
 
         JFreeChart barChart = ChartFactory.createBarChart3D("", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
@@ -248,6 +249,9 @@ public class VentanaP extends JFrame implements ActionListener {
         } else if (e.getSource() == generar) {
             if (ascendente.isSelected() == true) {
                 QuicksortA q = new QuicksortA(this, datos, 0);
+                q.start();
+            } if (descendente.isSelected() == true) {
+                QuiksortD q = new QuiksortD(this, datos, 0);
                 q.start();
             }
             

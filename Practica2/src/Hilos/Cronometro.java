@@ -1,4 +1,5 @@
 package Hilos;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -19,31 +20,23 @@ public class Cronometro extends Thread {
         this.segundos = 0;
 
     }
-    static boolean b = true;
-
 
     @Override
     public void run() {
-        if (b) {
-            while (this.minutos != 60) {
-                this.segundos = 0;
-                while (this.segundos < 60) {
-                    System.out.println(this.minutos + ":" + this.segundos);
-                    this.tiempo.setText(this.minutos + ":" + this.segundos);
-                    try {
-                        sleep(250);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Cronometro.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    this.segundos++;
+        while (this.minutos != 60) {
+            this.segundos = 0;
+            while (this.segundos < 60) {
+                System.out.println(this.minutos + ":" + this.segundos);
+                this.tiempo.setText(this.minutos + ":" + this.segundos);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Cronometro.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                this.minutos++;
+                this.segundos++;
             }
+            this.minutos++;
         }
-
-    }
-    public static void parar() {
-        b = false;
     }
 
 }

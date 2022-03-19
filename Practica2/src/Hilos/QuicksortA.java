@@ -23,27 +23,17 @@ public class QuicksortA extends Thread {
         this.contador = contador;
     }
 
-    static boolean a = true;
-
     @Override
     public void run() {
         Cronometro c = new Cronometro(tiempo1);
-
-        if (a == true) {
-            c.start();
-            quicksort(datos, 0, datos.length - 1);
-            iniciar = false;
-            acabar = true;
-            clase.cuadro.removeAll();
-            clase.cuadro.repaint();
-            clase.grafica();
-            c.b = false;
-        }
-       
-    }
-
-    public static void parar() {
-        a = false;
+        c.start();
+        quicksort(datos, 0, datos.length - 1);
+        iniciar = false;
+        acabar = true;
+        clase.cuadro.removeAll();
+        clase.cuadro.repaint();
+        clase.grafica();
+        c.interrupt();
     }
 
     public static void quicksort(int[] datos1, int primero, int ultimo) { //algoritmo de ordenamiento quickSort como funcion recursiva
@@ -66,8 +56,7 @@ public class QuicksortA extends Thread {
                 datos1[i] = datos1[j];
                 datos1[j] = aux;
                 try {
-                    Thread.sleep(250);
-                    System.out.println(a);
+                    Thread.sleep(500);
                 } catch (InterruptedException ex) {
                 }
                 clase.cuadro.removeAll();
@@ -89,7 +78,6 @@ public class QuicksortA extends Thread {
                 quicksort(datos1, i, ultimo);
             }
         }
-        a = false;
     }
 
 }
