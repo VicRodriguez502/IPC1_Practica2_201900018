@@ -1,12 +1,13 @@
 package Interfaz;
 
+import Hilos.Cronometro;
+import Hilos.QuicksortA;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import static Organizador.Reporte.enlace;
 import com.google.gson.*;
 import java.io.*;
-import javax.swing.event.AncestorListener;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -19,15 +20,15 @@ public class VentanaP extends JFrame implements ActionListener {
 
     //******************************************************************************
     //VARIABLES GLOBLAES PARA LOS DATOS LEIDOS DEL JSON
-    int[] datos;
-    int contador = 0;
+    static int[] datos;
+    static int contador = 0;
 
     //******************************************************************************
     //VARIABLES PARA CREACIÓN DE VENTANA
     JButton examinar, generar, cargar;
-    static JLabel ruta, ruta1, titulo, titulo1;
+    public static JLabel ruta, ruta1, titulo, titulo1, cronometro, tiempo1, pasos, pasitos;
     JRadioButton ascendente, descendente;
-    JPanel cuadro;
+    public static JPanel cuadro;
     File RUTA;
 
     String contenido = "";
@@ -95,6 +96,38 @@ public class VentanaP extends JFrame implements ActionListener {
         titulo1.setVisible(true);
         this.add(titulo1);
 
+        //TITULO DE TITULO DEl CRONOMETRO
+        cronometro = new JLabel("CRONOMETRO:");
+        cronometro.setBounds(210, 150, 150, 25);
+        cronometro.setForeground(Color.white);
+        cronometro.setFont(new Font("Verdana", Font.BOLD, 12));
+        cronometro.setVisible(true);
+        this.add(cronometro);
+
+        //TITULO PARA COLOCAR EL TIEMPO TRANSCURRIDO
+        tiempo1 = new JLabel("0:00");
+        tiempo1.setBounds(340, 150, 300, 25);
+        tiempo1.setForeground(Color.white);
+        tiempo1.setFont(new Font("Verdana", Font.BOLD, 12));
+        tiempo1.setVisible(true);
+        this.add(tiempo1);
+
+        //TITULO DE PASOS
+        pasos = new JLabel("PASOS:");
+        pasos.setBounds(800, 150, 150, 25);
+        pasos.setForeground(Color.white);
+        pasos.setFont(new Font("Verdana", Font.BOLD, 12));
+        pasos.setVisible(true);
+        this.add(pasos);
+
+        //TITULO PARA QUE CUENTE LOS PASOS 
+        pasitos = new JLabel();
+        pasitos.setBounds(960, 150, 150, 25);
+        pasitos.setForeground(Color.white);
+        pasitos.setFont(new Font("Verdana", Font.BOLD, 12));
+        pasitos.setVisible(true);
+        this.add(pasitos);
+
         //**************************************************************************
         //CREACIÓN DE LOS BOTONES
         //BOTON EXAMINAR PARA EL PATH
@@ -107,8 +140,8 @@ public class VentanaP extends JFrame implements ActionListener {
         examinar.addActionListener(this);
         this.add(examinar);
 
-        //BOTON GENERAR, PARA GENERAR LA GRÁFICA
-        generar = new JButton("GENERAR");
+        //BOTON GENERAR, PARA GENERAR LA GRÁFICA ORDENADA
+        generar = new JButton("ORDENAR");
         generar.setBounds(10, 90, 150, 25);
         generar.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 14));
         generar.setBackground(grisito);
@@ -116,9 +149,9 @@ public class VentanaP extends JFrame implements ActionListener {
         generar.setVisible(true);
         generar.addActionListener(this);
         this.add(generar);
-        
-         //BOTON CARGAR, FUNCIONALIDAD PARA CARGAR DATOS Y GENERAR TABLA CON DATOS DESORDENADOS
-        cargar = new JButton("CARGAR");
+
+        //BOTON CARGAR, FUNCIONALIDAD PARA CARGAR DATOS Y GENERAR TABLA CON DATOS DESORDENADOS
+        cargar = new JButton("GENERAR");
         cargar.setBounds(10, 50, 150, 25);
         cargar.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 14));
         cargar.setBackground(grisito);
@@ -129,12 +162,13 @@ public class VentanaP extends JFrame implements ActionListener {
 
         //*************************************************************************
         //CREACIÓN DEL PANEL PARA LA GRÁFICA 
+        Color blanco = new Color(251, 252, 252);
         cuadro = new JPanel();
         cuadro.setBounds(10, 180, 1300, 500);
         cuadro.setBackground(blanco);
         cuadro.setVisible(true);
         this.add(cuadro);
-        
+
         //**************************************************************************
         //CREACIÓN DE LA VENTANA
         this.setTitle("GRAFICADORA USAC 2022");
@@ -144,10 +178,13 @@ public class VentanaP extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
         this.setVisible(true);
+        this.add(cuadro);
 
     }
 
-    public void leerarchivo(File ruta) {
+    //******************************************************************************
+    //METODO PARA LEER ARCHIVO
+    public void CargarArchivo(File ruta) {
         try {
             lectura = new FileReader(ruta); //Obtendremos el texto 
             buff = new BufferedReader(lectura); //leera el texto
@@ -167,7 +204,6 @@ public class VentanaP extends JFrame implements ActionListener {
             System.out.println("Cantidad Objetos: " + arreglo.size());
             datos = new int[arreglo.size()];
             for (int i = 0; i < arreglo.size(); i++) {
-                // System.out.println(arreglo.get(i).getAsInt());
                 datos[i] = arreglo.get(i).getAsInt();
                 System.out.println("Numero: " + datos[i]);
             }
@@ -185,9 +221,9 @@ public class VentanaP extends JFrame implements ActionListener {
         }
     }
 
-    boolean a = true;
-
-    public void grafica() {
+    //******************************************************************************
+    //GRAFICA PARA DATOS DESORDENADOS
+    public static void grafica() {
         String color = "";
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -199,6 +235,7 @@ public class VentanaP extends JFrame implements ActionListener {
         ChartPanel panel = new ChartPanel(barChart);
         panel.setBounds(10, 50, 600, 400);
         cuadro.add(panel);
+
     }
 
     @Override
@@ -207,10 +244,14 @@ public class VentanaP extends JFrame implements ActionListener {
             RUTA = enlace();
             ruta1.setText(String.valueOf(RUTA));
         } else if (e.getSource() == cargar) {
-            leerarchivo(RUTA);
+            CargarArchivo(RUTA);
+        } else if (e.getSource() == generar) {
+            if (ascendente.isSelected() == true) {
+                QuicksortA q = new QuicksortA(this, datos, 0);
+                q.start();
+            }
+            
 
         }
-
     }
-
 }
