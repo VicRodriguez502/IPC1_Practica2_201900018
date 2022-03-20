@@ -11,6 +11,9 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import Hilos.QuicksortA;
 import Hilos.QuiksortD;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import org.jfree.chart.entity.StandardEntityCollection;
 
 /**
  *
@@ -20,8 +23,9 @@ public class VentanaP extends JFrame implements ActionListener {
 
     //******************************************************************************
     //VARIABLES GLOBLAES PARA LOS DATOS LEIDOS DEL JSON
-    public static int[] datos;
+    public static int[] datos, datos1;
     static int contador = 0;
+    public static JFreeChart barChart;
 
     //******************************************************************************
     //VARIABLES PARA CREACIÓN DE VENTANA
@@ -168,7 +172,7 @@ public class VentanaP extends JFrame implements ActionListener {
         cuadro.setBackground(blanco);
         cuadro.setVisible(true);
         this.add(cuadro);
-        
+
         //**************************************************************************
         //ICONO PARA QUE SE MUESTRE EN LA VENTANA PRINCIPAL
         setIconImage(new ImageIcon(getClass().getResource("graficas.png")).getImage());
@@ -207,8 +211,10 @@ public class VentanaP extends JFrame implements ActionListener {
             JsonArray arreglo = (JsonArray) jsonarrayobyeto;
             System.out.println("Cantidad Objetos: " + arreglo.size());
             datos = new int[arreglo.size()];
+            datos1 = new int[arreglo.size()];
             for (int i = 0; i < arreglo.size(); i++) {
                 datos[i] = arreglo.get(i).getAsInt();
+                datos1[i] = arreglo.get(i).getAsInt();
                 System.out.println("Numero: " + datos[i]);
             }
             grafica();
@@ -235,12 +241,13 @@ public class VentanaP extends JFrame implements ActionListener {
             dataset.addValue(datos[i], String.valueOf(i), color);
         }
 
-        JFreeChart barChart = ChartFactory.createBarChart3D("", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
+        barChart = ChartFactory.createBarChart3D("", "", "", dataset, PlotOrientation.VERTICAL, true, true, false);
         ChartPanel panel = new ChartPanel(barChart);
         panel.setBounds(10, 50, 600, 400);
         cuadro.add(panel);
 
     }
+
     //*****************************************************************************
     //METODO PARA DARLE VIDA A LOS BOTONES 
     @Override
@@ -254,13 +261,32 @@ public class VentanaP extends JFrame implements ActionListener {
             if (ascendente.isSelected() == true) {
                 QuicksortA q = new QuicksortA(this, datos, 0);
                 q.start();
-            } if (descendente.isSelected() == true) {
+                
+            }
+            if (descendente.isSelected() == true) {
                 QuiksortD q = new QuiksortD(this, datos, 0);
                 q.start();
             }
-            
 
         }
     }
 
+    public static int[] desordenados() {
+        return datos1;
+    }
+
+    public static int[] ordenados() {
+        return datos;
+    }
+
+    public static void crearImagen(JFreeChart a) {
+        ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
+        File archivo = new File("C:\\Users\\Victor Rodriguez\\OneDrive\\Documentos\\IPC1_Practica2_201900018\\Practica2\\imagen.jpeg");
+        try {
+            //ChartUtilities.saveChartAsJPEG(archivo, a, 1000, 700);
+             ChartUtilities.saveChartAsJPEG( archivo , barChart , 760,400 );
+        } catch (IOException ex) {
+        }
+
+    }
 }

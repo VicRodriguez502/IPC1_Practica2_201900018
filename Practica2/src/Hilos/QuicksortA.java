@@ -38,7 +38,9 @@ public class QuicksortA extends Thread {
         clase.cuadro.repaint();
         clase.grafica();
         c.stop();
+        crearImagen(VentanaP.barChart);
         reportehtml();
+        
 
     }
     //******************************************************************************

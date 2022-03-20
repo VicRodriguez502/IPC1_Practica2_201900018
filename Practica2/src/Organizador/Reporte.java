@@ -4,10 +4,13 @@ import static Interfaz.VentanaP.pasitos;
 import static Interfaz.VentanaP.tiempo1;
 import static Interfaz.VentanaP.datos;
 import static Interfaz.VentanaP.contenido;
+import static Interfaz.VentanaP.desordenados;
+import static Interfaz.VentanaP.ordenados;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -51,20 +54,19 @@ public class Reporte {
                     + "<p><b>Pasos:</b> " + pasitos.getText() + "</p>"
                     + "<p><b>Datos desordenados:</b> </p>"
                     + "    <body>";
-            JsonParser parser = new JsonParser();
-            Object contenido1 = parser.parse(contenido);
-            JsonObject objetito = (JsonObject) contenido1;
-            String title = objetito.get("title").getAsString();
-            Object jsonarrayobyeto = objetito.get("dataset");
-            JsonArray arreglo = (JsonArray) jsonarrayobyeto;
-            System.out.println("Cantidad Objetos: " + arreglo.size());
-            datos = new int[arreglo.size()];
-            for (int i = 0; i < arreglo.size(); i++) {
-                datos[i] = arreglo.get(i).getAsInt();
+            for (int i = 0; i < desordenados().length; i++) {
                 cadenaHTML += "            <b>"
-                        + "  <b>" + datos[i] + "</b>" //llamamos lo que contiene la tabla
+                        + "  <b>" + String.valueOf(desordenados()[i]) + "</b>" //llamamos lo que contiene la tabla
                         + "            </b>";
             }
+            cadenaHTML += " <p><b>Datos Ordenados:</b> </p>";
+            for (int i = 0; i < ordenados().length; i++) {
+                cadenaHTML += "            <b>"
+                        + "  <b>" + String.valueOf(ordenados()[i]) + "</b>" //llamamos lo que contiene la tabla
+                        + "            </b>";
+            }
+            cadenaHTML += " <p><b>Grafica Generada:</b> </p>"
+                    +"<img src=\"C:\\Users\\Victor Rodriguez\\OneDrive\\Documentos\\IPC1_Practica2_201900018\\Practica2\\imagen.jpeg\"/>";
 
             cadenaHTML += "</head"
                     + "    </body>"
@@ -100,11 +102,13 @@ public class Reporte {
 
                 HTMLWorker htmlWorker = new HTMLWorker(document);
                 htmlWorker.parse(new StringReader(html));
-
+                Image imagen = Image.getInstance("C:\\Users\\Victor Rodriguez\\OneDrive\\Documentos\\IPC1_Practica2_201900018\\Practica2\\imagen.jpeg");
+                imagen.scaleToFit(500, 300);
+                document.add(imagen);
+                
                 document.close();
             
         }catch(Exception e){
-            e.printStackTrace();
         }
     }
   

@@ -1,6 +1,7 @@
 package Hilos;
 
 import Interfaz.VentanaP;
+import static Interfaz.VentanaP.crearImagen;
 import static Interfaz.VentanaP.tiempo1;
 import static Organizador.Reporte.reportehtml;
 import static practica2.GraphUsac.acabar;
@@ -41,6 +42,7 @@ public class QuiksortD extends Thread {
         clase.cuadro.repaint();
         clase.grafica();
         c.stop();
+        crearImagen(VentanaP.barChart);
         reportehtml();
     }
 
