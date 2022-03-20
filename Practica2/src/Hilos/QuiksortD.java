@@ -1,8 +1,8 @@
 package Hilos;
 
-import static Hilos.QuicksortA.quicksort;
 import Interfaz.VentanaP;
 import static Interfaz.VentanaP.tiempo1;
+import static Organizador.Reporte.reportehtml;
 import static practica2.GraphUsac.acabar;
 import static practica2.GraphUsac.iniciar;
 import static practica2.GraphUsac.iniciar1;
@@ -12,21 +12,27 @@ import static practica2.GraphUsac.iniciar1;
  * @author Victor Rodriguez
  */
 public class QuiksortD extends Thread {
-
-    private static VentanaP clase;
+    //*****************************************************************************
+    //ATRIBUTOS PARA ORDENAMIENTO
+    Cronometro c = new Cronometro(tiempo1);
+    private  VentanaP clase;
     private int[] datos;
-    private static int contador;
-    private static int pasos = 0;
+    private  int contador;
+    private  int pasos = 0;
 
+    //******************************************************************************
+    //CONSTRUCTOR DE ORDENAMIENTO
     public QuiksortD(VentanaP clase, int[] datos, int contador) {
         this.clase = clase;
         this.datos = datos;
         this.contador = contador;
     }
 
+    //******************************************************************************
+    //MÉTODO RUN PARA QUE CORRA EL ORDENAMIENTO
     @Override
     public void run() {
-        Cronometro c = new Cronometro(tiempo1);
+        
         c.start();
         quicksort(datos, 0, datos.length - 1);
         iniciar = false;
@@ -34,9 +40,13 @@ public class QuiksortD extends Thread {
         clase.cuadro.removeAll();
         clase.cuadro.repaint();
         clase.grafica();
+        c.stop();
+        reportehtml();
     }
 
-    public static void quicksort(int[] datos1, int primero, int ultimo) { //algoritmo de ordenamiento quickSort como funcion recursiva
+    //******************************************************************************
+    //METODO DE ORDENAMIENTO QUICKSORT DESCENDENTE 
+    public  void quicksort(int[] datos1, int primero, int ultimo) { //algoritmo de ordenamiento quickSort como funcion recursiva
         int i, j;
         double pivote;
         int aux;

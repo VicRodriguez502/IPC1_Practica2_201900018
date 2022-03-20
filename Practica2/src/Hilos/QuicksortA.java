@@ -2,41 +2,48 @@ package Hilos;
 
 import Interfaz.VentanaP;
 import static practica2.GraphUsac.iniciar;
-import static practica2.GraphUsac.acabar;
 import static practica2.GraphUsac.iniciar1;
 import static Interfaz.VentanaP.*;
+import static Organizador.Reporte.reportehtml;
 
 /**
  *
  * @author Victor Rodriguez
  */
 public class QuicksortA extends Thread {
-
-    private static VentanaP clase;
+    //******************************************************************************
+    //ATRIBUTOS PARA EL ORDENAMIENTO
+    Cronometro c = new Cronometro(tiempo1);
+    private VentanaP clase;
     private int[] datos;
-    private static int contador;
-    private static int pasos = 0;
-
+    private int contador;
+    private int pasos = 0;
+    
+    //******************************************************************************
+    //CONSTRUCTOR PARA ORDENAMIENTO
     public QuicksortA(VentanaP clase, int[] datos, int contador) {
         this.clase = clase;
         this.datos = datos;
         this.contador = contador;
     }
 
+    //******************************************************************************
+    //METODO RUN PARA QUE CORRA EL ORDENAMIENTO
     @Override
     public void run() {
-        Cronometro c = new Cronometro(tiempo1);
         c.start();
         quicksort(datos, 0, datos.length - 1);
         iniciar = false;
-        acabar = true;
         clase.cuadro.removeAll();
         clase.cuadro.repaint();
         clase.grafica();
-        c.interrupt();
-    }
+        c.stop();
+        reportehtml();
 
-    public static void quicksort(int[] datos1, int primero, int ultimo) { //algoritmo de ordenamiento quickSort como funcion recursiva
+    }
+    //******************************************************************************
+    //ORDENAMIENTO QUICKSORT 
+    public void quicksort(int[] datos1, int primero, int ultimo) { //algoritmo de ordenamiento quickSort como funcion recursiva
         int i, j;
         double pivote;
         int aux;
@@ -78,6 +85,7 @@ public class QuicksortA extends Thread {
                 quicksort(datos1, i, ultimo);
             }
         }
+
     }
 
 }

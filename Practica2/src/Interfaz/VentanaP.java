@@ -1,8 +1,5 @@
 package Interfaz;
 
-import Hilos.Cronometro;
-import Hilos.QuicksortA;
-import Hilos.QuiksortD;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,6 +9,8 @@ import java.io.*;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import Hilos.QuicksortA;
+import Hilos.QuiksortD;
 
 /**
  *
@@ -21,7 +20,7 @@ public class VentanaP extends JFrame implements ActionListener {
 
     //******************************************************************************
     //VARIABLES GLOBLAES PARA LOS DATOS LEIDOS DEL JSON
-    static int[] datos;
+    public static int[] datos;
     static int contador = 0;
 
     //******************************************************************************
@@ -32,7 +31,7 @@ public class VentanaP extends JFrame implements ActionListener {
     public static JPanel cuadro;
     File RUTA;
 
-    String contenido = "";
+    public static String contenido = "";
     File json;
     FileReader lectura;
     BufferedReader buff;
@@ -169,6 +168,10 @@ public class VentanaP extends JFrame implements ActionListener {
         cuadro.setBackground(blanco);
         cuadro.setVisible(true);
         this.add(cuadro);
+        
+        //**************************************************************************
+        //ICONO PARA QUE SE MUESTRE EN LA VENTANA PRINCIPAL
+        setIconImage(new ImageIcon(getClass().getResource("graficas.png")).getImage());
 
         //**************************************************************************
         //CREACIÓN DE LA VENTANA
@@ -238,7 +241,8 @@ public class VentanaP extends JFrame implements ActionListener {
         cuadro.add(panel);
 
     }
-
+    //*****************************************************************************
+    //METODO PARA DARLE VIDA A LOS BOTONES 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == examinar) {
@@ -258,4 +262,5 @@ public class VentanaP extends JFrame implements ActionListener {
 
         }
     }
+
 }
