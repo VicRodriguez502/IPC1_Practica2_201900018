@@ -1,5 +1,4 @@
 package practica2;
-import Hilos.Cronometro;
 import Interfaz.*;
 
 /**

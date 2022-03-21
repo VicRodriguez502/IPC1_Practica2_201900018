@@ -2,13 +2,8 @@ package Organizador;
 
 import static Interfaz.VentanaP.pasitos;
 import static Interfaz.VentanaP.tiempo1;
-import static Interfaz.VentanaP.datos;
-import static Interfaz.VentanaP.contenido;
 import static Interfaz.VentanaP.desordenados;
 import static Interfaz.VentanaP.ordenados;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
@@ -96,9 +91,9 @@ public class Reporte {
                 document.open();
                 document.addAuthor("Victor Rodriguez");
                 document.addCreator("Victor Rodriguez");
-                document.addSubject("reporteUsuarios");
+                document.addSubject("Victor Rodriguez");
                 document.addCreationDate();
-                document.addTitle("ReporteUsuario");
+                document.addTitle("Victor Rodriguez");
 
                 HTMLWorker htmlWorker = new HTMLWorker(document);
                 htmlWorker.parse(new StringReader(html));

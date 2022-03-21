@@ -40,8 +40,6 @@ public class QuicksortA extends Thread {
         c.stop();
         crearImagen(VentanaP.barChart);
         reportehtml();
-        
-
     }
     //******************************************************************************
     //ORDENAMIENTO QUICKSORT 

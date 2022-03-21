@@ -283,7 +283,6 @@ public class VentanaP extends JFrame implements ActionListener {
         ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
         File archivo = new File("C:\\Users\\Victor Rodriguez\\OneDrive\\Documentos\\IPC1_Practica2_201900018\\Practica2\\imagen.jpeg");
         try {
-            //ChartUtilities.saveChartAsJPEG(archivo, a, 1000, 700);
              ChartUtilities.saveChartAsJPEG( archivo , barChart , 760,400 );
         } catch (IOException ex) {
         }
